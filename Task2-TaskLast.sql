@@ -1,3 +1,4 @@
+Use InternshipTaskDb
 ---Task-2----
 create table Employee
 (
@@ -286,6 +287,28 @@ insert into ##MyTempTable (DepartmentId , Name)
 select DId , Name from Department
 drop table ##MyTempTable
 
+--Table Valued Parameters
+create table #MyTempTable (DepartmentId int ,Name nvarchar(30))
+ 
+create type Tabletype as table  
+(DepartmentId int ,Name nvarchar(30))
+
+create proc spinsertfortemp
+@TempTabletype Tabletype readonly
+as 
+begin 
+insert into #MyTempTable
+Select * from @TempTabletype
+end
+declare @myvariable Tabletype
+--insert into @myvariable values (1,'Accounts')
+--insert into @myvariable values (2,'HR')
+--insert into @myvariable values (3,'Admin')
+insert into @myvariable values (4,'Finance')
+
+exec spinsertfortemp @myvariable 
+
+select * from #MyTempTable
 
 alter proc spTemptableEmp
 as
@@ -399,10 +422,10 @@ SalesYear int
 drop table Sales
 select * from Sales
 insert into Sales values('Amir' , 75500 , 2020)
-insert into Sales values('Shimq' , 85500 ,2019 )
+insert into Sales values('Shamiq' , 85500 ,2019 )
 insert into Sales values('Osama' , 65500, 2020)
 insert into Sales values('Amir' , 50500, 2018)
-insert into Sales values('Shimiq' , 45000,2018)
+insert into Sales values('Shamiq' , 45000,2018)
 insert into Sales values('Osama' , 35000, 2019)
 insert into Sales values('Shamiq' , 55000, 2020)
 insert into Sales values('Osama' , 80000, 2018)
@@ -434,9 +457,7 @@ Subdate date
 select * from Fees
 
 insert into Fees values(0011, 5000,'06/11/2020')
-
 insert into Fees values(0012, 6000,'2020/12/22')
-
 insert into Fees values(0013, 5500,'2020/11/23')
 insert into Fees values(0014, 6000,'2020/11/24')
 insert into Fees values(0015, 6000,'2020/10/25')
